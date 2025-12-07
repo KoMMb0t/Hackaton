@@ -4,7 +4,7 @@ Rendering für alle Screens und UI-Elemente
 """
 
 import pygame
-from typing import Optional
+from typing import Optional, List
 
 
 class PyGameUI:
@@ -24,6 +24,7 @@ class PyGameUI:
         self.COLOR_HP = (255, 50, 50)
         self.COLOR_STAMINA = (50, 200, 255)
         self.COLOR_XP = (255, 215, 0)
+        self.COLOR_SELECTED = (100, 255, 100)
         
         # Fonts
         try:
@@ -31,12 +32,14 @@ class PyGameUI:
             self.large_font = pygame.font.Font(None, 48)
             self.medium_font = pygame.font.Font(None, 36)
             self.small_font = pygame.font.Font(None, 24)
+            self.tiny_font = pygame.font.Font(None, 18)
         except:
             # Fallback wenn keine Fonts verfügbar
             self.title_font = pygame.font.SysFont("arial", 72)
             self.large_font = pygame.font.SysFont("arial", 48)
             self.medium_font = pygame.font.SysFont("arial", 36)
             self.small_font = pygame.font.SysFont("arial", 24)
+            self.tiny_font = pygame.font.SysFont("arial", 18)
     
     def render_main_menu(self):
         """Rendert das Hauptmenü"""
@@ -75,7 +78,7 @@ class PyGameUI:
             y += 40
         
         # Version Info
-        version = self.small_font.render("v2.0 - Steam Edition", True, self.COLOR_TEXT_DIM)
+        version = self.small_font.render("v2.0 - Steam Edition (Fixed)", True, self.COLOR_TEXT_DIM)
         version_rect = version.get_rect(center=(self.width // 2, self.height - 30))
         self.screen.blit(version, version_rect)
     
@@ -112,7 +115,7 @@ class PyGameUI:
         back_rect = back.get_rect(center=(self.width // 2, self.height - 50))
         self.screen.blit(back, back_rect)
     
-    def render_skin_select(self, player1_skin, player2_skin, skin_manager):
+    def render_skin_select(self, player1_skin, player2_skin, skin_manager, selected_player=1):
         """Rendert die Skin-Auswahl"""
         # Titel
         title = self.large_font.render("WÄHLE SKINS", True, self.COLOR_PRIMARY)
@@ -120,9 +123,16 @@ class PyGameUI:
         self.screen.blit(title, title_rect)
         
         # Spieler 1 Skin
-        p1_title = self.medium_font.render("Spieler 1", True, self.COLOR_PRIMARY)
+        p1_color = self.COLOR_SELECTED if selected_player == 1 else self.COLOR_PRIMARY
+        p1_title = self.medium_font.render("Spieler 1", True, p1_color)
         p1_title_rect = p1_title.get_rect(center=(self.width // 4, 200))
         self.screen.blit(p1_title, p1_title_rect)
+        
+        # Selection indicator for Player 1
+        if selected_player == 1:
+            indicator = self.small_font.render("◄ SELECTED ►", True, self.COLOR_SELECTED)
+            indicator_rect = indicator.get_rect(center=(self.width // 4, 170))
+            self.screen.blit(indicator, indicator_rect)
         
         # Skin-Preview (ASCII)
         p1_skin_display = skin_manager.get_skin_display(player1_skin)
@@ -137,9 +147,16 @@ class PyGameUI:
         self.screen.blit(p1_name, p1_name_rect)
         
         # Spieler 2 Skin
-        p2_title = self.medium_font.render("Spieler 2", True, self.COLOR_SECONDARY)
+        p2_color = self.COLOR_SELECTED if selected_player == 2 else self.COLOR_SECONDARY
+        p2_title = self.medium_font.render("Spieler 2", True, p2_color)
         p2_title_rect = p2_title.get_rect(center=(3 * self.width // 4, 200))
         self.screen.blit(p2_title, p2_title_rect)
+        
+        # Selection indicator for Player 2
+        if selected_player == 2:
+            indicator = self.small_font.render("◄ SELECTED ►", True, self.COLOR_SELECTED)
+            indicator_rect = indicator.get_rect(center=(3 * self.width // 4, 170))
+            self.screen.blit(indicator, indicator_rect)
         
         p2_skin_display = skin_manager.get_skin_display(player2_skin)
         p2_skin_text = self.title_font.render(p2_skin_display, True, self.COLOR_TEXT)
@@ -153,6 +170,7 @@ class PyGameUI:
         
         # Anweisungen
         instructions = [
+            "TAB - Spieler wechseln",
             "← → Skin wechseln",
             "ENTER - Start",
             "ESC - Zurück"
@@ -164,8 +182,13 @@ class PyGameUI:
             self.screen.blit(text, text_rect)
             y += 35
     
-    def render_battle(self, agent1, agent2, skin1, skin2, skin_manager):
+    def render_battle(self, agent1, agent2, skin1, skin2, skin_manager, battle_log: List[str] = None, battle_round: int = 0):
         """Rendert den Kampf"""
+        # Round counter
+        round_text = self.medium_font.render(f"Runde {battle_round}", True, self.COLOR_TEXT_DIM)
+        round_rect = round_text.get_rect(center=(self.width // 2, 50))
+        self.screen.blit(round_text, round_rect)
+        
         # Agenten-Avatare
         avatar1 = self.title_font.render(skin_manager.get_skin_display(skin1), 
                                          True, self.COLOR_PRIMARY)
@@ -197,10 +220,22 @@ class PyGameUI:
         # Stats - Agent 2
         self.render_agent_stats(agent2, 3 * self.width // 4, 350)
         
-        # Kampf-Log (unten)
-        log_text = self.small_font.render("Kampf läuft...", True, self.COLOR_TEXT_DIM)
-        log_rect = log_text.get_rect(center=(self.width // 2, self.height - 50))
-        self.screen.blit(log_text, log_rect)
+        # Battle Log
+        if battle_log:
+            log_title = self.small_font.render("Kampf-Log:", True, self.COLOR_TEXT)
+            self.screen.blit(log_title, (self.width // 2 - 60, 520))
+            
+            y = 550
+            # Show last 5 entries
+            for entry in battle_log[-5:]:
+                log_text = self.tiny_font.render(entry, True, self.COLOR_TEXT_DIM)
+                log_rect = log_text.get_rect(center=(self.width // 2, y))
+                self.screen.blit(log_text, log_rect)
+                y += 25
+        else:
+            log_text = self.small_font.render("Kampf läuft...", True, self.COLOR_TEXT_DIM)
+            log_rect = log_text.get_rect(center=(self.width // 2, self.height - 50))
+            self.screen.blit(log_text, log_rect)
     
     def render_agent_stats(self, agent, x, y):
         """Rendert Agent-Stats"""
@@ -231,7 +266,7 @@ class PyGameUI:
         pygame.draw.rect(self.screen, (50, 50, 50), bg_rect)
         
         # Füllstand
-        fill_width = int((current / maximum) * bar_width)
+        fill_width = int((current / maximum) * bar_width) if maximum > 0 else 0
         fill_rect = pygame.Rect(x - bar_width // 2, y, fill_width, bar_height)
         pygame.draw.rect(self.screen, color, fill_rect)
         

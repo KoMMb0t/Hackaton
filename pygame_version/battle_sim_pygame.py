@@ -11,6 +11,7 @@ import pygame
 import sys
 import os
 from pathlib import Path
+import time
 
 # Füge Parent-Verzeichnis zum Path hinzu für Imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -62,8 +63,18 @@ class BattleSimulatorPyGame:
         self.player1_skin = "default_attacker"
         self.player2_skin = "default_defender"
         
+        # Skin selection state
+        self.selected_player = 1  # 1 or 2 - which player's skin is being selected
+        
         # Game Engine
         self.game_engine = None
+        
+        # Battle state
+        self.battle_round = 0
+        self.battle_log = []
+        self.last_action_time = 0
+        self.action_delay = 2.0  # Seconds between actions in AI vs AI mode
+        self.battle_finished = False
         
     def run(self):
         """Hauptschleife"""
@@ -131,17 +142,27 @@ class BattleSimulatorPyGame:
                 self.start_battle()
             elif event.key == pygame.K_ESCAPE:
                 self.game_state = "GAME_MODE_SELECT"
+            # Switch between player 1 and player 2 skin selection
+            elif event.key == pygame.K_TAB:
+                self.selected_player = 2 if self.selected_player == 1 else 1
             # Skin-Auswahl mit Pfeiltasten
             elif event.key == pygame.K_LEFT:
-                self.player1_skin = self.skin_manager.get_previous_skin(self.player1_skin)
+                if self.selected_player == 1:
+                    self.player1_skin = self.skin_manager.get_previous_skin(self.player1_skin)
+                else:
+                    self.player2_skin = self.skin_manager.get_previous_skin(self.player2_skin)
             elif event.key == pygame.K_RIGHT:
-                self.player1_skin = self.skin_manager.get_next_skin(self.player1_skin)
+                if self.selected_player == 1:
+                    self.player1_skin = self.skin_manager.get_next_skin(self.player1_skin)
+                else:
+                    self.player2_skin = self.skin_manager.get_next_skin(self.player2_skin)
     
     def handle_battle_events(self, event):
         """Battle Events"""
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 self.game_state = "MAIN_MENU"
+                self.reset_battle()
             
             # Spieler-Aktionen (wenn Multiplayer)
             if self.selected_mode in ["PLAYER_VS_AI", "PLAYER_VS_PLAYER"]:
@@ -159,16 +180,64 @@ class BattleSimulatorPyGame:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 self.game_state = "MAIN_MENU"
+                self.reset_battle()
             elif event.key == pygame.K_r:
                 self.start_battle()  # Rematch
     
     def update(self):
         """Update-Logik"""
-        if self.game_state == "BATTLE":
+        if self.game_state == "BATTLE" and not self.battle_finished:
             # Battle-Update
-            if self.game_engine:
-                # Hier würde die Battle-Logik laufen
-                pass
+            if self.game_engine and self.selected_mode == "AI_VS_AI":
+                # Auto-play for AI vs AI mode
+                current_time = time.time()
+                if current_time - self.last_action_time >= self.action_delay:
+                    self.execute_battle_round()
+                    self.last_action_time = current_time
+    
+    def execute_battle_round(self):
+        """Führt eine Kampfrunde aus"""
+        if not self.player1_agent.is_alive() or not self.player2_agent.is_alive():
+            self.battle_finished = True
+            self.game_state = "GAME_OVER"
+            return
+        
+        # Agent 1 wählt Aktion
+        action1 = self.player1_agent.choose_action()
+        
+        # Agent 2 wählt Aktion
+        action2 = self.player2_agent.choose_action()
+        
+        # Führe Aktionen aus
+        if action1:
+            result1 = self.game_engine.execute_action(self.player1_agent, self.player2_agent, action1)
+            self.battle_log.append(f"{self.player1_agent.name}: {action1.name}")
+        
+        if action2 and self.player2_agent.is_alive():
+            result2 = self.game_engine.execute_action(self.player2_agent, self.player1_agent, action2)
+            self.battle_log.append(f"{self.player2_agent.name}: {action2.name}")
+        
+        # Regeneriere Stamina
+        self.player1_agent.regenerate_stamina()
+        self.player2_agent.regenerate_stamina()
+        
+        # Reduziere Cooldowns
+        self.player1_agent.reduce_cooldowns()
+        self.player2_agent.reduce_cooldowns()
+        
+        self.battle_round += 1
+        
+        # Keep only last 5 log entries
+        if len(self.battle_log) > 10:
+            self.battle_log = self.battle_log[-10:]
+    
+    def reset_battle(self):
+        """Setzt den Battle-State zurück"""
+        self.battle_round = 0
+        self.battle_log = []
+        self.last_action_time = 0
+        self.battle_finished = False
+        self.game_engine = None
     
     def render(self):
         """Rendering"""
@@ -182,11 +251,11 @@ class BattleSimulatorPyGame:
             self.ui.render_mode_select()
         elif self.game_state == "SKIN_SELECT":
             self.ui.render_skin_select(self.player1_skin, self.player2_skin, 
-                                      self.skin_manager)
+                                      self.skin_manager, self.selected_player)
         elif self.game_state == "BATTLE":
             self.ui.render_battle(self.player1_agent, self.player2_agent,
                                  self.player1_skin, self.player2_skin,
-                                 self.skin_manager)
+                                 self.skin_manager, self.battle_log, self.battle_round)
         elif self.game_state == "GAME_OVER":
             winner = self.player1_agent if self.player1_agent.is_alive() else self.player2_agent
             self.ui.render_game_over(winner)
@@ -220,6 +289,10 @@ class BattleSimulatorPyGame:
         
         # Erstelle Game Engine
         self.game_engine = GameEngine(self.player1_agent, self.player2_agent)
+        
+        # Reset battle state
+        self.reset_battle()
+        self.last_action_time = time.time()
         
         self.game_state = "BATTLE"
 
