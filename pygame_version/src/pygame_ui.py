@@ -4,7 +4,7 @@ Rendering für alle Screens und UI-Elemente
 """
 
 import pygame
-from typing import Optional
+from typing import Optional, List
 
 
 class PyGameUI:
@@ -24,6 +24,7 @@ class PyGameUI:
         self.COLOR_HP = (255, 50, 50)
         self.COLOR_STAMINA = (50, 200, 255)
         self.COLOR_XP = (255, 215, 0)
+        self.COLOR_SELECTED = (100, 255, 100)
         
         # Fonts
         try:
@@ -31,12 +32,14 @@ class PyGameUI:
             self.large_font = pygame.font.Font(None, 48)
             self.medium_font = pygame.font.Font(None, 36)
             self.small_font = pygame.font.Font(None, 24)
+            self.tiny_font = pygame.font.Font(None, 18)
         except:
             # Fallback wenn keine Fonts verfügbar
             self.title_font = pygame.font.SysFont("arial", 72)
             self.large_font = pygame.font.SysFont("arial", 48)
             self.medium_font = pygame.font.SysFont("arial", 36)
             self.small_font = pygame.font.SysFont("arial", 24)
+            self.tiny_font = pygame.font.SysFont("arial", 18)
     
     def render_main_menu(self):
         """Rendert das Hauptmenü"""
@@ -75,7 +78,7 @@ class PyGameUI:
             y += 40
         
         # Version Info
-        version = self.small_font.render("v2.0 - Steam Edition", True, self.COLOR_TEXT_DIM)
+        version = self.small_font.render("v2.0 - Steam Edition (Fixed)", True, self.COLOR_TEXT_DIM)
         version_rect = version.get_rect(center=(self.width // 2, self.height - 30))
         self.screen.blit(version, version_rect)
     
@@ -112,60 +115,80 @@ class PyGameUI:
         back_rect = back.get_rect(center=(self.width // 2, self.height - 50))
         self.screen.blit(back, back_rect)
     
-    def render_skin_select(self, player1_skin, player2_skin, skin_manager):
+    def render_skin_select(self, player1_skin, player2_skin, skin_manager, selected_player=1):
         """Rendert die Skin-Auswahl"""
         # Titel
         title = self.large_font.render("WÄHLE SKINS", True, self.COLOR_PRIMARY)
-        title_rect = title.get_rect(center=(self.width // 2, 80))
+        title_rect = title.get_rect(center=(self.width // 2, 60))
         self.screen.blit(title, title_rect)
         
-        # Spieler 1 Skin
-        p1_title = self.medium_font.render("Spieler 1", True, self.COLOR_PRIMARY)
-        p1_title_rect = p1_title.get_rect(center=(self.width // 4, 200))
+        # Spieler 1 Skin (OBEN)
+        p1_color = self.COLOR_SELECTED if selected_player == 1 else self.COLOR_PRIMARY
+        p1_title = self.medium_font.render("Spieler 1", True, p1_color)
+        p1_title_rect = p1_title.get_rect(center=(self.width // 2, 140))
         self.screen.blit(p1_title, p1_title_rect)
+        
+        # Selection indicator for Player 1
+        if selected_player == 1:
+            indicator = self.small_font.render("▲ SELECTED ▲", True, self.COLOR_SELECTED)
+            indicator_rect = indicator.get_rect(center=(self.width // 2, 110))
+            self.screen.blit(indicator, indicator_rect)
         
         # Skin-Preview (ASCII)
         p1_skin_display = skin_manager.get_skin_display(player1_skin)
         p1_skin_text = self.title_font.render(p1_skin_display, True, self.COLOR_TEXT)
-        p1_skin_rect = p1_skin_text.get_rect(center=(self.width // 4, 300))
+        p1_skin_rect = p1_skin_text.get_rect(center=(self.width // 2, 220))
         self.screen.blit(p1_skin_text, p1_skin_rect)
         
         # Skin-Name
-        p1_name = self.small_font.render(skin_manager.get_skin_name(player1_skin), 
+        p1_name = self.small_font.render(f"◄ {skin_manager.get_skin_name(player1_skin)} ►", 
                                          True, self.COLOR_TEXT_DIM)
-        p1_name_rect = p1_name.get_rect(center=(self.width // 4, 380))
+        p1_name_rect = p1_name.get_rect(center=(self.width // 2, 280))
         self.screen.blit(p1_name, p1_name_rect)
         
-        # Spieler 2 Skin
-        p2_title = self.medium_font.render("Spieler 2", True, self.COLOR_SECONDARY)
-        p2_title_rect = p2_title.get_rect(center=(3 * self.width // 4, 200))
+        # Spieler 2 Skin (UNTEN)
+        p2_color = self.COLOR_SELECTED if selected_player == 2 else self.COLOR_SECONDARY
+        p2_title = self.medium_font.render("Spieler 2", True, p2_color)
+        p2_title_rect = p2_title.get_rect(center=(self.width // 2, 360))
         self.screen.blit(p2_title, p2_title_rect)
+        
+        # Selection indicator for Player 2
+        if selected_player == 2:
+            indicator = self.small_font.render("▼ SELECTED ▼", True, self.COLOR_SELECTED)
+            indicator_rect = indicator.get_rect(center=(self.width // 2, 500))
+            self.screen.blit(indicator, indicator_rect)
         
         p2_skin_display = skin_manager.get_skin_display(player2_skin)
         p2_skin_text = self.title_font.render(p2_skin_display, True, self.COLOR_TEXT)
-        p2_skin_rect = p2_skin_text.get_rect(center=(3 * self.width // 4, 300))
+        p2_skin_rect = p2_skin_text.get_rect(center=(self.width // 2, 440))
         self.screen.blit(p2_skin_text, p2_skin_rect)
         
-        p2_name = self.small_font.render(skin_manager.get_skin_name(player2_skin), 
+        p2_name = self.small_font.render(f"◄ {skin_manager.get_skin_name(player2_skin)} ►", 
                                          True, self.COLOR_TEXT_DIM)
-        p2_name_rect = p2_name.get_rect(center=(3 * self.width // 4, 380))
+        p2_name_rect = p2_name.get_rect(center=(self.width // 2, 500))
         self.screen.blit(p2_name, p2_name_rect)
         
         # Anweisungen
         instructions = [
+            "↑ ↓ Spieler wechseln",
             "← → Skin wechseln",
             "ENTER - Start",
             "ESC - Zurück"
         ]
-        y = 500
+        y = 580
         for instruction in instructions:
             text = self.small_font.render(instruction, True, self.COLOR_TEXT_DIM)
             text_rect = text.get_rect(center=(self.width // 2, y))
             self.screen.blit(text, text_rect)
-            y += 35
+            y += 30
     
-    def render_battle(self, agent1, agent2, skin1, skin2, skin_manager):
+    def render_battle(self, agent1, agent2, skin1, skin2, skin_manager, battle_log: List[str] = None, battle_round: int = 0, waiting_for_input: bool = False, current_agent = None, last_action: str = ""):
         """Rendert den Kampf"""
+        # Round counter
+        round_text = self.medium_font.render(f"Runde {battle_round}", True, self.COLOR_TEXT_DIM)
+        round_rect = round_text.get_rect(center=(self.width // 2, 50))
+        self.screen.blit(round_text, round_rect)
+        
         # Agenten-Avatare
         avatar1 = self.title_font.render(skin_manager.get_skin_display(skin1), 
                                          True, self.COLOR_PRIMARY)
@@ -197,10 +220,55 @@ class PyGameUI:
         # Stats - Agent 2
         self.render_agent_stats(agent2, 3 * self.width // 4, 350)
         
-        # Kampf-Log (unten)
-        log_text = self.small_font.render("Kampf läuft...", True, self.COLOR_TEXT_DIM)
-        log_rect = log_text.get_rect(center=(self.width // 2, self.height - 50))
-        self.screen.blit(log_text, log_rect)
+        # Turn indicator
+        if current_agent:
+            turn_text = self.small_font.render(f"Am Zug: {current_agent.name}", True, self.COLOR_SELECTED)
+            turn_rect = turn_text.get_rect(center=(self.width // 2, 90))
+            self.screen.blit(turn_text, turn_rect)
+        
+        # Action selection for player
+        if waiting_for_input and current_agent:
+            action_title = self.medium_font.render("WÄHLE DEINE AKTION:", True, self.COLOR_PRIMARY)
+            action_rect = action_title.get_rect(center=(self.width // 2, 520))
+            self.screen.blit(action_title, action_rect)
+            
+            available_actions = current_agent.get_available_actions()
+            y = 560
+            for i, action in enumerate(available_actions[:8]):  # Max 8 actions
+                # Check if action is available
+                can_use = action.stamina_cost <= current_agent.stamina and action.cooldown == 0
+                color = self.COLOR_TEXT if can_use else self.COLOR_TEXT_DIM
+                
+                action_text = f"[{i+1}] {action.name}"
+                if not can_use:
+                    if action.cooldown > 0:
+                        action_text += f" (Cooldown: {action.cooldown})"
+                    else:
+                        action_text += f" (Stamina: {action.stamina_cost})"
+                
+                text = self.tiny_font.render(action_text, True, color)
+                text_rect = text.get_rect(center=(self.width // 2, y))
+                self.screen.blit(text, text_rect)
+                y += 22
+        
+        # Battle Log
+        elif battle_log:
+            log_title = self.small_font.render("Kampf-Log:", True, self.COLOR_TEXT)
+            self.screen.blit(log_title, (self.width // 2 - 60, 520))
+            
+            y = 550
+            # Show last 5 entries
+            for entry in battle_log[-5:]:
+                log_text = self.tiny_font.render(entry, True, self.COLOR_TEXT_DIM)
+                log_rect = log_text.get_rect(center=(self.width // 2, y))
+                self.screen.blit(log_text, log_rect)
+                y += 25
+        
+        # Last action result
+        if last_action and not waiting_for_input:
+            result_text = self.small_font.render(last_action, True, self.COLOR_SECONDARY)
+            result_rect = result_text.get_rect(center=(self.width // 2, self.height - 30))
+            self.screen.blit(result_text, result_rect)
     
     def render_agent_stats(self, agent, x, y):
         """Rendert Agent-Stats"""
@@ -231,7 +299,7 @@ class PyGameUI:
         pygame.draw.rect(self.screen, (50, 50, 50), bg_rect)
         
         # Füllstand
-        fill_width = int((current / maximum) * bar_width)
+        fill_width = int((current / maximum) * bar_width) if maximum > 0 else 0
         fill_rect = pygame.Rect(x - bar_width // 2, y, fill_width, bar_height)
         pygame.draw.rect(self.screen, color, fill_rect)
         
