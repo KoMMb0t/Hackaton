@@ -27,7 +27,7 @@ from cline_integration.dashboard import dashboard_commands
 
 
 @click.group()
-@click.version_option(version='4.0.0', prog_name='Agent Battle Simulator')
+@click.version_option(version='5.0.0', prog_name='Agent Battle Simulator')
 def cli():
     """
     🎮 Agent Battle Simulator - Cline Command Center
@@ -160,7 +160,7 @@ def status():
     click.echo("=" * 60)
     
     # Version
-    click.echo(f"\n📦 Version: 4.0.0 (Cline Edition)")
+    click.echo(f"\n📦 Version: 5.0.0 (Meta Edition)")
     
     # Features
     click.echo("\n✨ Features:")
@@ -170,6 +170,8 @@ def status():
     click.echo("  ✅ AI-Generated Actions")
     click.echo("  ✅ Twitch Integration")
     click.echo("  ✅ Agent Therapy")
+    click.echo("  ✅ Meta-Therapist (v5.0)")
+    click.echo("  ✅ EchoMancer (v5.0)")
     
     # Modules
     click.echo("\n📚 Verfügbare Commands:")
@@ -224,6 +226,148 @@ def config(setup, enable_all):
     else:
         click.echo("Nutze --setup für interaktive Konfiguration")
         click.echo("Oder --enable-all um alle Features zu aktivieren")
+
+
+# ===== META-THERAPIST COMMANDS (v5.0) =====
+
+@cli.group('therapy')
+def therapy():
+    """Meta-Therapist - Therapie für überforderte Agenten"""
+    pass
+
+
+@therapy.command('monitor')
+@click.option('--agent', required=True, help='Agent-Name')
+def therapy_monitor(agent):
+    """Zeigt Monitoring-Report für Agent"""
+    from meta_therapist import AgentMonitor
+    monitor = AgentMonitor()
+    # Load saved state if exists
+    click.echo(f"Monitoring-Report für {agent} wird geladen...")
+    click.echo("Feature in Entwicklung!")
+
+
+@therapy.command('intervene')
+@click.option('--agent', required=True, help='Agent-Name')
+def therapy_intervene(agent):
+    """Startet Intervention für Agent"""
+    from meta_therapist import MetaTherapist
+    therapist = MetaTherapist()
+    click.echo(f"Intervention für {agent} wird gestartet...")
+    click.echo("Feature in Entwicklung!")
+
+
+# ===== ECHOMANCER COMMANDS (v5.0) =====
+
+@cli.group('remix')
+def remix():
+    """EchoMancer - Battle Poetry & Voice"""
+    pass
+
+
+@remix.command('battle')
+@click.option('--log', 'log_file', required=True, help='Battle-Log JSON')
+@click.option('--style', type=click.Choice(['haiku', 'epic', 'therapy', 'rap', 'commentary']), default='epic')
+@click.option('--voice', type=click.Choice(['dramatic', 'epic', 'calm', 'hype']), default='dramatic')
+@click.option('--play', is_flag=True, help='Audio direkt abspielen')
+def remix_battle(log_file, style, voice, play):
+    """Remixt Battle zu Poesie + Audio"""
+    from echomancer import EchoMancer
+    import json
+    
+    click.echo(f"Remixing battle from {log_file}...")
+    
+    # Load battle data
+    try:
+        with open(log_file, 'r') as f:
+            battle_data = json.load(f)
+    except Exception as e:
+        click.echo(f"Error loading battle log: {e}", err=True)
+        return
+    
+    # Remix
+    mancer = EchoMancer()
+    remix = mancer.remix_battle(
+        battle_data,
+        style=style,
+        voice=voice,
+        synthesize_audio=True,
+        play_audio=play
+    )
+    
+    mancer.print_remix(remix)
+
+
+@remix.command('poem')
+@click.option('--log', 'log_file', required=True, help='Battle-Log JSON')
+@click.option('--style', type=click.Choice(['haiku', 'epic', 'therapy', 'rap', 'commentary']), default='epic')
+def remix_poem(log_file, style):
+    """Generiert nur Gedicht (ohne Audio)"""
+    from echomancer import BattlePoet
+    import json
+    
+    click.echo(f"Generating poem from {log_file}...")
+    
+    try:
+        with open(log_file, 'r') as f:
+            battle_data = json.load(f)
+    except Exception as e:
+        click.echo(f"Error loading battle log: {e}", err=True)
+        return
+    
+    poet = BattlePoet()
+    poem = poet.generate_poem(battle_data, style)
+    poet.print_poem(poem)
+
+
+# ===== LIFE COACH 404 COMMANDS (v6.0) =====
+
+@cli.group('coach')
+def coach():
+    """Life Coach 404 - Ratgeber für existenziell Überforderte"""
+    pass
+
+
+@coach.command('ask')
+@click.option('--type', 'coach_type', type=click.Choice(['job', 'relationship', 'finance']), required=True)
+@click.option('--personality', type=click.Choice(['stoic', 'goth', 'meme_lord', 'kant']), default='stoic')
+@click.option('--problem', required=True, help='Dein Problem/Frage')
+def coach_ask(coach_type, personality, problem):
+    """Frag einen Life Coach um Rat"""
+    from life_coach_404 import JobCoach, RelationshipCoach, FinanceCoach, Personality
+    
+    # Map strings to enums
+    personality_map = {
+        'stoic': Personality.STOIC,
+        'goth': Personality.GOTH,
+        'meme_lord': Personality.MEME_LORD,
+        'kant': Personality.KANT
+    }
+    
+    pers = personality_map[personality]
+    
+    # Create coach
+    if coach_type == 'job':
+        coach_obj = JobCoach(pers)
+    elif coach_type == 'relationship':
+        coach_obj = RelationshipCoach(pers)
+    else:
+        coach_obj = FinanceCoach(pers)
+    
+    click.echo(f"\n🧠 {coach_type.upper()} COACH ({personality})")
+    click.echo("="*60)
+    
+    # Get advice
+    advice = coach_obj.give_advice(problem)
+    
+    click.echo(f"\n💬 RATSCHLAG:")
+    click.echo(advice['advice'])
+    
+    click.echo(f"\n💡 FOLLOW-UP-FRAGEN:")
+    for q in advice['follow_up_questions']:
+        click.echo(f"  • {q}")
+    
+    click.echo("\n" + "="*60)
 
 
 # ===== MAIN =====

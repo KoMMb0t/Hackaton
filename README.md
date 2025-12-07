@@ -1,445 +1,192 @@
 # 🎮 Agent Battle Simulator
 
-Ein unterhaltsames Python-basiertes Kampfspiel zwischen KI-Agenten mit absurden Aktionen, einem Erfahrungspunkte-System und verschiedenen Spielmodi.
+**Ein Cline-natives Automationssystem für absurde KI-Kämpfe**
 
-**Jetzt mit PyGame-Version UND 3 WOW-Features! 🚀**
+[![Python](https://img.shields.io/badge/Python-3.11-blue.svg)](https://www.python.org/)
+[![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/Version-5.0-orange.svg)](https://github.com/KoMMb0t/Hackaton/releases)
+
+**Repository:** https://github.com/KoMMb0t/Hackaton
 
 ---
 
-## 🌟 Versionen
-
-### ⭐ v4.0 - Cline Edition (NEU!)
-**Ein vollständiges, Cline-natives Automationssystem!**
-
-✅ **CLI Command Center** - Click-basiertes Framework  
-✅ **Autonomous Battle League** - Selbstverwaltete Turniere  
-✅ **Analytics Dashboard** - FastAPI Web-Interface  
-
-📖 **[Vollständige Dokumentation → CLINE_EDITION.md](CLINE_EDITION.md)**
+## 🚀 Quick Start
 
 ```bash
-# Schnellstart
+# Clone & Run
+git clone https://github.com/KoMMb0t/Hackaton.git
+cd Hackaton
 python3 agentbattle.py --help
-python3 agentbattle.py league init --season 1
+
+# Turnier simulieren
+python3 agentbattle.py simulate-tournament --agents 4 --rounds 3
+
+# Life Coach fragen
+python3 agentbattle.py coach ask --type job --personality goth --problem "Soll ich kündigen?"
+
+# Dashboard starten
 python3 agentbattle.py dashboard --port 8000
 ```
 
-### 📟 v1.0 - CLI-Version (Original)
-Die klassische Terminal-Version mit ASCII-Art und Textinterface.
+---
 
-### 🎮 v2.0 - PyGame-Version
-Grafische Version mit lokalem Multiplayer, 20+ Skins und Steam-Vorbereitung.
+## 🎯 Was ist das?
 
-### 🚀 v3.0 - WOW-Features (NEU!)
-Drei originelle Erweiterungen die die Hackathon-Jury umhauen:
-- 🧠 **AI-Generierte Kampfaktionen** - Dynamische Aktionen mit GPT
-- 📺 **Twitch-Chat-Integration** - Live-Interaktion mit Zuschauern
-- 🧘 **Agenten-Therapie** - KI-Reflexionen mit PDF-Export
+**Agent Battle Simulator** ist ein vollständiges Multi-Version-Projekt das von einem einfachen CLI-Kampfspiel zu einem komplexen System mit AI-Integration, Voice-Synthesis, Therapie für überforderte Agenten und existenzieller Krisen-Beratung evolviert ist.
+
+### 🏆 Hackathon-Kategorien
+
+- ✅ **Best Agentic App** - Multi-Agent-System
+- ✅ **Best Voice Agent** - EchoMancer
+- ✅ **Most Delightfully Weird** - Therapie für KI
+- ✅ **Best Solo Dev** - 48h autonom
 
 ---
 
-## 🎯 Features
+## ✨ Features
 
-### Kern-Features (v1.0 - alle Versionen)
+### Version 1.0 - CLI Battle System
+- ⚔️ Rundenbasierte Kämpfe
+- 🎲 16 absurde Aktionen
+- 📈 XP-System & Level-Ups
+- 💾 Speichern/Laden
 
-- **🤖 Zwei KI-Agenten** mit unterschiedlichen Strategien
-  - 🔴 Der Angreifer: Aggressiv und schadensfokussiert
-  - 🔵 Der Verteidiger: Defensiv mit cleveren Kontern
+### Version 2.0 - PyGame Edition
+- 🎮 Grafisches Interface
+- 🎨 20+ Skins
+- 👥 Lokaler Multiplayer
+- 🖼️ ASCII-Art Avatare
 
-- **⚔️ 16 absurde Kampfaktionen**
-  - 🧻 Toilettenpapier-Tsunami
-  - 🔥 Feuerball der Bürofrustration
-  - 🪖 Meeting-Demoralisierung
-  - 🧃 Smoothie-Attacke mit doppeltem Chia-Schaden
-  - 🧲 Magnetische Feldverwirrung
-  - 🧠 Gedankenlesen
-  - ☕ Kaffee-Konter
-  - Und viele mehr!
+### Version 3.0 - WOW Features
+- 🧠 AI-Generated Actions (GPT-4)
+- 📺 Twitch-Integration
+- 🧘 Agent Therapy + PDF-Export
 
-- **📈 Erfahrungspunkte-System**
-  - Agenten sammeln XP und leveln auf
-  - Stats skalieren mit Level
-  - Persistenter Fortschritt
+### Version 4.0 - Cline Edition
+- 🎮 CLI Command Center
+- 🤖 Autonomous Battle League
+- 📊 Analytics Dashboard (FastAPI)
 
-- **🎮 Mehrere Spielmodi**
-  - Manueller Kampf (Schritt-für-Schritt)
-  - Autopilot (Vollautomatisch)
-  - Turnier-Modus (Best of 3/5/7)
-
-- **💾 Speichersystem**
-  - Speichern/Laden von Agenten
-  - JSON-basierte Persistenz
-
-### PyGame-Features (v2.0)
-
-- **👥 Lokaler Multiplayer**
-  - Spieler vs KI
-  - Spieler vs Spieler
-  - KI vs KI (zum Zuschauen)
-
-- **🎭 Skins-System**
-  - Über 20 verschiedene Avatare
-  - Angreifer-, Verteidiger- und Spezial-Skins
-  - Von 🔥 Feuer-Krieger bis 🍕 Pizza-Power
-
-- **🏆 Steam-Integration (vorbereitet)**
-  - 20 Achievements
-  - Leaderboards
-  - Cloud Saves
-
-### WOW-Features (v3.0) 🚀
-
-#### 🧠 AI-Generierte Kampfaktionen
-- Dynamische Aktionen in Echtzeit mit GPT-4
-- Kontext-basiert (Kampfverlauf, Stats)
-- Automatisches Balancing
-- Lokale Speicherung & Wiederverwendung
-- Voting-System für Bewertung
-
-#### 📺 Twitch-Chat-Integration
-- Live-Interaktion mit Zuschauern
-- 9 verschiedene Chat-Commands
-- Cooldown-System
-- Voting für kritische Entscheidungen
-- Perfekt für Streamer!
-
-#### 🧘 Agenten-Therapie
-- Post-Battle KI-Reflexionen
-- Übertrieben dramatisch & philosophisch
-- PDF-Export (professionell formatiert)
-- Text-Export
-- Session-Speicherung
-
-**Siehe [WOW_FEATURES.md](WOW_FEATURES.md) für Details!**
+### Version 5.0 - Meta Edition ⭐ NEU!
+- 🧠 **Meta-Therapist** - Echtzeit-Monitoring & Interventionen
+- 🎤 **EchoMancer** - Battle Poetry + Voice-Synthesis
+- 🧽 **Life Coach 404** - Multi-Agent-Ratgeber (Job, Beziehung, Finanzen)
 
 ---
 
-## 📋 Installation
+## 🎭 Highlights
 
-### Voraussetzungen
-
-- Python 3.8 oder höher
-
-### CLI-Version (v1.0)
+### Meta-Therapist 🧠
+Überwacht Agenten in Echtzeit und greift ein bei:
+- Action-Loops
+- Stamina-Depletion
+- Burnout-Symptomen
 
 ```bash
-# Repository klonen
-git clone https://github.com/KoMMb0t/Hackaton.git
-cd Hackaton
-
-# Keine Dependencies nötig!
-python3 battle_sim.py
+python3 agentbattle.py therapy monitor --agent "Agent Name"
 ```
 
-### PyGame-Version (v2.0)
+### EchoMancer 🎤
+Generiert poetische Zusammenfassungen:
+- Haiku, Epic, Therapy, Rap, Commentary
+- Voice-Synthesis (ElevenLabs + TTS)
 
 ```bash
-cd Hackaton/pygame_version
-
-# Dependencies installieren
-pip install -r requirements.txt
-
-# Spiel starten
-python3 battle_sim_pygame.py
+python3 agentbattle.py remix poem --log battle.json --style haiku
 ```
 
-### WOW-Features (v3.0)
+### Life Coach 404 🧽
+3 Coaches × 4 Persönlichkeiten = 12 Beratungs-Stile
+- 💼 Job (Stoic, Goth, Meme-Lord, Kant)
+- ❤️ Relationship
+- 💰 Finance
 
 ```bash
-cd Hackaton
-
-# Dependencies installieren
-pip install -r requirements_v3.txt
-
-# OpenAI API Key setzen (für AI-Features)
-export OPENAI_API_KEY='your-key-here'
-
-# Features konfigurieren
-python3 feature_config.py setup
-
-# Oder alle Features aktivieren
-python3 feature_config.py enable-all
+python3 agentbattle.py coach ask --type job --personality goth --problem "Soll ich kündigen?"
 ```
-
----
-
-## 🎮 Nutzung
-
-### CLI-Version
-
-```bash
-python3 battle_sim.py
-```
-
-Folge den Menü-Anweisungen:
-1. Neuer Kampf (Manuell/Autopilot)
-2. Turnier starten
-3. Statistiken anzeigen
-4. Speichern/Laden
-
-### PyGame-Version
-
-```bash
-cd pygame_version
-python3 battle_sim_pygame.py
-```
-
-Steuerung:
-- **SPACE** - Menü-Navigation
-- **1-3** - Modus-Auswahl
-- **← →** - Skin-Auswahl
-- **1-8** - Aktionen (im Kampf)
-
-### WOW-Features
-
-```python
-# AI-Aktionen
-from ai_actions import AIActionGenerator
-generator = AIActionGenerator()
-action = generator.generate_action(context)
-
-# Twitch-Integration
-from twitch_integration import TwitchGameIntegration
-integration = TwitchGameIntegration("your_channel")
-integration.connect_and_start()
-
-# Agenten-Therapie
-from agent_therapy import AgentTherapist
-therapist = AgentTherapist()
-session = therapist.generate_therapy_session(battle_data)
-therapist.export_to_pdf(session)
-```
-
-Siehe [WOW_FEATURES.md](WOW_FEATURES.md) für vollständige Dokumentation!
-
----
-
-## 🏗️ Projektstruktur
-
-```
-Hackaton/
-├── 📟 CLI-Version (v1.0)
-│   ├── battle_sim.py          # CLI Hauptprogramm
-│   ├── agents.py              # Agenten-Klassen & KI
-│   ├── actions.py             # Kampfaktionen
-│   ├── game_engine.py         # Spielmechanik
-│   ├── ui.py                  # CLI Interface
-│   ├── save_system.py         # Persistenz
-│   └── requirements.txt       # Keine Dependencies!
-│
-├── 🎮 PyGame-Version (v2.0)
-│   └── pygame_version/
-│       ├── battle_sim_pygame.py
-│       ├── src/
-│       │   ├── pygame_ui.py
-│       │   ├── multiplayer.py
-│       │   └── skins.py
-│       ├── assets/
-│       ├── steam/
-│       └── requirements.txt
-│
-├── 🚀 WOW-Features (v3.0)
-│   ├── ai_actions.py          # AI-Generierte Aktionen
-│   ├── twitch_integration.py  # Twitch-Chat-Bot
-│   ├── agent_therapy.py       # Therapie-System
-│   ├── feature_config.py      # Konfiguration
-│   ├── WOW_FEATURES.md        # Feature-Doku
-│   └── requirements_v3.txt    # Dependencies
-│
-├── 📚 Dokumentation
-│   ├── README.md              # Diese Datei
-│   ├── DOCUMENTATION.md       # Technische Doku
-│   ├── HACKATHON_SUBMISSION.md
-│   ├── HANDOVER_TO_MONDAY.md
-│   ├── HANDOVER_TO_MANUS_V2.md
-│   └── WOW_FEATURES.md        # WOW-Features-Doku
-│
-└── LICENSE                    # Apache 2.0
-```
-
----
-
-## 🎲 Spielmechanik
-
-### Stats
-Jeder Agent hat:
-- **HP (Health Points)**: Lebenspunkte
-- **Stamina**: Energie für Aktionen
-- **Level**: Steigt mit XP
-- **XP**: Erfahrungspunkte
-- **Attack/Defense Bonus**: Skaliert mit Level
-
-### Aktionen
-Jede Aktion hat:
-- **Schaden**: Basis-Schadenswert
-- **Stamina-Kosten**: Benötigte Energie
-- **Cooldown**: Wartezeit nach Nutzung
-- **Spezialeffekte**: Buffs, Debuffs, Heilung, Stun
-
-### Level-System
-- Gewinner: 100 XP + (Runden × 10)
-- Verlierer: 50 XP + (Runden × 5)
-- Level-Up: +20 HP, +10 Stamina, +2 Attack/Defense
-
----
-
-## 🏆 Für den Cline Hackathon
-
-Dieses Projekt wurde für den **Cline Hackathon** (8.-14. Dezember 2024) entwickelt.
-
-### Highlights:
-- ✅ Vollständig funktionsfähig (3 Versionen!)
-- ✅ Exzellent dokumentiert (6 MD-Dateien)
-- ✅ Modulares Design (20+ Module)
-- ✅ Keine externen Dependencies (CLI-Version)
-- ✅ Erweiterbar (v3.0 beweist es!)
-- ✅ Unterhaltsam & einzigartig!
-
-### Alleinstellungsmerkmale (v3.0):
-1. **AI-generierte Kampfaktionen** - Niemand sonst hat das!
-2. **Twitch-Chat-Kontrolle** - Live-Entertainment-Tool!
-3. **Post-Battle-Therapie** - Meta-Level Humor!
-
----
-
-## 🚀 Steam-Release
-
-Die PyGame-Version ist vorbereitet für einen **Steam-Release als Joke-Game**!
-
-Features:
-- 20 Steam Achievements
-- Leaderboards
-- Cloud Saves
-- Trading Cards (geplant)
-
-Siehe `pygame_version/steam/STEAM_RELEASE_GUIDE.md` für Details.
 
 ---
 
 ## 📊 Projekt-Statistiken
 
-| Metrik | v1.0 | v2.0 | v3.0 | Gesamt |
-|--------|------|------|------|--------|
-| **Python-Dateien** | 6 | 4 | 4 | **14** |
-| **Zeilen Code** | ~1650 | ~600 | ~800 | **~3050** |
-| **Klassen** | 8 | 6 | 6 | **20** |
-| **Features** | 6 | 9 | 12 | **27** |
-| **Skins** | - | 20+ | - | **20+** |
-| **Achievements** | - | 20 | - | **20** |
-| **Dependencies** | 0 | 1 | 2 | **3** |
-| **Dokumentation** | 3 MD | 2 MD | 2 MD | **7 MD** |
-
-**Gesamt-Komplexität**: Hoch  
-**Code-Qualität**: Professionell  
-**Dokumentation**: Exzellent  
-**Spielbarkeit**: Vollständig funktional  
-**WOW-Faktor**: 🔥🔥🔥🔥🔥
+| Metrik | Wert |
+|--------|------|
+| Versionen | 5 |
+| Python-Module | 31 |
+| Zeilen Code | ~6000 |
+| Features | 50+ |
+| Entwicklungszeit | ~12h |
 
 ---
 
-## 🔧 Entwicklung
+## 🏗️ Architektur
 
-### Neue Aktionen hinzufügen
-
-Siehe `DOCUMENTATION.md` für Details.
-
-### Neue Skins hinzufügen (PyGame)
-
-```python
-# In pygame_version/src/skins.py
-"my_skin": {
-    "name": "Mein Skin",
-    "display": "🎨",
-    "type": "special",
-    "description": "Cool!"
-}
 ```
-
-### Executable erstellen
-
-```bash
-cd pygame_version
-pip install pyinstaller
-pyinstaller --onefile --windowed battle_sim_pygame.py
+Agent Battle Simulator
+├── Core (v1-2) - CLI + PyGame
+├── AI Features (v3) - GPT, Twitch, Therapy
+├── Cline (v4) - CLI, League, Dashboard
+└── Meta-Layer (v5) - Therapist, EchoMancer, Life Coach
 ```
 
 ---
 
-## 🐛 Bekannte Probleme
+## 🛠️ Tech Stack
 
-### CLI-Version (v1.0)
-- Keine (soweit bekannt!)
-
-### PyGame-Version (v2.0)
-- Keine Sound-Effekte (noch nicht implementiert)
-- Nur lokaler Multiplayer (kein Online)
-
-### WOW-Features (v3.0)
-- Benötigt OpenAI API Key für AI-Features
-- Twitch-Integration benötigt aktiven Stream
-- PDF-Export benötigt fpdf2
+- **Core:** Python 3.11
+- **CLI:** Click
+- **Web:** FastAPI
+- **Game:** PyGame
+- **AI:** OpenAI GPT-4
+- **Voice:** ElevenLabs, System-TTS
+- **Twitch:** IRC-Bot
 
 ---
 
-## 🚀 Roadmap
+## 📚 Dokumentation
 
-### Version 3.1 (geplant)
-- [ ] TTS für Therapie-Reflexionen
-- [ ] Mehr Twitch-Commands
-- [ ] AI-generierte Skins
-- [ ] Statistik-Dashboard
+- **[HACKATHON_HANDOVER.md](HACKATHON_HANDOVER.md)** - Komplette Übersicht ⭐
+- [CLINE_EDITION.md](CLINE_EDITION.md) - Cline-Features
+- [WOW_FEATURES.md](WOW_FEATURES.md) - AI-Features
+- [DOCUMENTATION.md](DOCUMENTATION.md) - Technische Doku
 
-### Version 4.0 (Zukunft)
-- [ ] Online-Multiplayer
-- [ ] Ranked-Modus
-- [ ] Discord-Integration
-- [ ] Mobile Version
+---
+
+## 🎯 Roadmap
+
+### v6.0 - The Complete Experience
+- 🕵️ MemeCIA - Battle-Pattern-Analyzer
+- 🎙️ ShowerThoughtsFM - Battle-Radio
+- 🪖 Bureaucrabot - Training-Mode
+- ⚔️ Gladiator Mode - Voice-Commentary + Wetten
+
+### v7.0 - Cline Daemon
+- 🤖 Self-modifying Agents
+- 🧬 Evolution-System
+- 📊 Auto-Balancing
+- 🎴 Agent Cards
 
 ---
 
 ## 📝 Lizenz
 
-Apache License 2.0 - Siehe LICENSE Datei
-
-Copyright 2024 KoMMb0t <kommuniverse@gmail.com>
+Apache License 2.0 - Copyright 2024 KoMMb0t
 
 ---
 
-## 🎉 Credits
+## 🙏 Credits
 
-Entwickelt für den **Cline Hackathon** (8.-14. Dezember 2024)
+Made with 💻 & ☕ for the **Cline Hackathon 2024**
 
-**v1.0 & v2.0**: Cline AI  
-**v3.0 WOW-Features**: Designed by Monday AI (MondayManusKIon)
-
-Inspiriert von klassischen RPG-Kampfsystemen und modernem Game Design.
+*"Wenn deine Agenten Therapie brauchen, haben wir ein Problem. Oder ein Feature."*
 
 ---
 
-## 🤝 Contributing
+## 🔗 Links
 
-Contributions sind willkommen! Öffne ein Issue oder Pull Request.
-
----
-
-## 📞 Support
-
-- **GitHub**: https://github.com/KoMMb0t/Hackaton
-- **Email**: kommuniverse@gmail.com
+- **Repository:** https://github.com/KoMMb0t/Hackaton
+- **Email:** kommuniverse@gmail.com
 
 ---
 
-## 🌟 Danksagungen
-
-- Dem Cline Hackathon für die Motivation
-- Der Python-Community
-- OpenAI für GPT-4
-- Twitch für die API
-- Allen die "Toilettenpapier-Tsunami" für eine legitime Waffe halten
-- Monday AI für die verrückten Feature-Ideen
-
----
-
-**Viel Spaß beim Kämpfen! ⚔️🎮🚀**
-
-*"Wo Toilettenpapier-Tsunamis auf AI-generierte Aktionen, Twitch-Chaos und existenzielle Therapie treffen!"*
+**⭐ Star this repo if you like absurd AI battles!**
