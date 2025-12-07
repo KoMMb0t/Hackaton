@@ -4,7 +4,7 @@ Agent Battle Simulator - PyGame Version
 Mit Grafik, Animationen, Multiplayer und Skins
 
 Für den Cline Hackathon (8.-14. Dezember)
-Steam-Ready Version
+Steam-Ready Version - FULLY FUNCTIONAL
 """
 
 import pygame
@@ -73,8 +73,12 @@ class BattleSimulatorPyGame:
         self.battle_round = 0
         self.battle_log = []
         self.last_action_time = 0
-        self.action_delay = 2.0  # Seconds between actions in AI vs AI mode
+        self.action_delay = 1.5  # Seconds between actions
         self.battle_finished = False
+        self.current_turn = 1  # 1 or 2 - which agent's turn
+        self.waiting_for_player_action = False
+        self.selected_action = None
+        self.last_action_result = ""
         
     def run(self):
         """Hauptschleife"""
@@ -165,17 +169,34 @@ class BattleSimulatorPyGame:
             if event.key == pygame.K_ESCAPE:
                 self.game_state = "MAIN_MENU"
                 self.reset_battle()
+                return
             
-            # Spieler-Aktionen (wenn Multiplayer)
-            if self.selected_mode in ["PLAYER_VS_AI", "PLAYER_VS_PLAYER"]:
+            # Player action selection
+            if self.waiting_for_player_action:
+                current_agent = self.player1_agent if self.current_turn == 1 else self.player2_agent
+                available_actions = current_agent.get_available_actions()
+                
+                action_index = None
                 if event.key == pygame.K_1:
-                    self.multiplayer.select_action(0)
+                    action_index = 0
                 elif event.key == pygame.K_2:
-                    self.multiplayer.select_action(1)
+                    action_index = 1
                 elif event.key == pygame.K_3:
-                    self.multiplayer.select_action(2)
+                    action_index = 2
                 elif event.key == pygame.K_4:
-                    self.multiplayer.select_action(3)
+                    action_index = 3
+                elif event.key == pygame.K_5:
+                    action_index = 4
+                elif event.key == pygame.K_6:
+                    action_index = 5
+                elif event.key == pygame.K_7:
+                    action_index = 6
+                elif event.key == pygame.K_8:
+                    action_index = 7
+                
+                if action_index is not None and action_index < len(available_actions):
+                    self.selected_action = available_actions[action_index]
+                    self.waiting_for_player_action = False
     
     def handle_game_over_events(self, event):
         """Game Over Events"""
@@ -189,49 +210,80 @@ class BattleSimulatorPyGame:
     def update(self):
         """Update-Logik"""
         if self.game_state == "BATTLE" and not self.battle_finished:
-            # Battle-Update
-            if self.game_engine and self.selected_mode == "AI_VS_AI":
-                # Auto-play for AI vs AI mode
-                current_time = time.time()
-                if current_time - self.last_action_time >= self.action_delay:
-                    self.execute_battle_round()
-                    self.last_action_time = current_time
+            current_time = time.time()
+            
+            # Check if battle is over
+            if not self.player1_agent.is_alive() or not self.player2_agent.is_alive():
+                self.battle_finished = True
+                self.game_state = "GAME_OVER"
+                return
+            
+            # Don't process if waiting for player
+            if self.waiting_for_player_action:
+                return
+            
+            # Wait for action delay
+            if current_time - self.last_action_time < self.action_delay:
+                return
+            
+            # Execute turn
+            self.execute_turn()
+            self.last_action_time = current_time
     
-    def execute_battle_round(self):
-        """Führt eine Kampfrunde aus"""
-        if not self.player1_agent.is_alive() or not self.player2_agent.is_alive():
-            self.battle_finished = True
-            self.game_state = "GAME_OVER"
+    def execute_turn(self):
+        """Führt einen Zug aus"""
+        if self.current_turn == 1:
+            attacker = self.player1_agent
+            defender = self.player2_agent
+            is_player1_human = self.selected_mode in ["PLAYER_VS_AI", "PLAYER_VS_PLAYER"]
+        else:
+            attacker = self.player2_agent
+            defender = self.player1_agent
+            is_player2_human = self.selected_mode == "PLAYER_VS_PLAYER"
+            is_player1_human = False
+        
+        # Determine if current agent is human-controlled
+        is_human = (self.current_turn == 1 and self.selected_mode in ["PLAYER_VS_AI", "PLAYER_VS_PLAYER"]) or \
+                   (self.current_turn == 2 and self.selected_mode == "PLAYER_VS_PLAYER")
+        
+        # Get action
+        if is_human and self.selected_action is None:
+            # Wait for player input
+            self.waiting_for_player_action = True
             return
         
-        # Agent 1 wählt Aktion
-        action1 = self.player1_agent.choose_action()
+        if is_human:
+            action = self.selected_action
+            self.selected_action = None
+        else:
+            # AI chooses action
+            action = attacker.choose_action()
         
-        # Agent 2 wählt Aktion
-        action2 = self.player2_agent.choose_action()
+        if action:
+            # Execute action
+            result = self.game_engine.execute_action(attacker, defender, action)
+            
+            # Log action
+            log_entry = f"{attacker.name}: {action.name}"
+            if hasattr(result, 'damage') and result.damage > 0:
+                log_entry += f" ({result.damage} Schaden)"
+            self.battle_log.append(log_entry)
+            self.last_action_result = log_entry
+            
+            # Keep only last 10 entries
+            if len(self.battle_log) > 10:
+                self.battle_log = self.battle_log[-10:]
         
-        # Führe Aktionen aus
-        if action1:
-            result1 = self.game_engine.execute_action(self.player1_agent, self.player2_agent, action1)
-            self.battle_log.append(f"{self.player1_agent.name}: {action1.name}")
+        # Regenerate and reduce cooldowns
+        attacker.regenerate_stamina()
+        attacker.reduce_cooldowns()
         
-        if action2 and self.player2_agent.is_alive():
-            result2 = self.game_engine.execute_action(self.player2_agent, self.player1_agent, action2)
-            self.battle_log.append(f"{self.player2_agent.name}: {action2.name}")
+        # Switch turn
+        self.current_turn = 2 if self.current_turn == 1 else 1
         
-        # Regeneriere Stamina
-        self.player1_agent.regenerate_stamina()
-        self.player2_agent.regenerate_stamina()
-        
-        # Reduziere Cooldowns
-        self.player1_agent.reduce_cooldowns()
-        self.player2_agent.reduce_cooldowns()
-        
-        self.battle_round += 1
-        
-        # Keep only last 5 log entries
-        if len(self.battle_log) > 10:
-            self.battle_log = self.battle_log[-10:]
+        # Increment round when both players have acted
+        if self.current_turn == 1:
+            self.battle_round += 1
     
     def reset_battle(self):
         """Setzt den Battle-State zurück"""
@@ -240,6 +292,10 @@ class BattleSimulatorPyGame:
         self.last_action_time = 0
         self.battle_finished = False
         self.game_engine = None
+        self.current_turn = 1
+        self.waiting_for_player_action = False
+        self.selected_action = None
+        self.last_action_result = ""
     
     def render(self):
         """Rendering"""
@@ -255,9 +311,14 @@ class BattleSimulatorPyGame:
             self.ui.render_skin_select(self.player1_skin, self.player2_skin, 
                                       self.skin_manager, self.selected_player)
         elif self.game_state == "BATTLE":
-            self.ui.render_battle(self.player1_agent, self.player2_agent,
-                                 self.player1_skin, self.player2_skin,
-                                 self.skin_manager, self.battle_log, self.battle_round)
+            current_agent = self.player1_agent if self.current_turn == 1 else self.player2_agent
+            self.ui.render_battle(
+                self.player1_agent, self.player2_agent,
+                self.player1_skin, self.player2_skin,
+                self.skin_manager, self.battle_log, self.battle_round,
+                self.waiting_for_player_action, current_agent,
+                self.last_action_result
+            )
         elif self.game_state == "GAME_OVER":
             winner = self.player1_agent if self.player1_agent.is_alive() else self.player2_agent
             self.ui.render_game_over(winner)
@@ -273,17 +334,14 @@ class BattleSimulatorPyGame:
         """Startet einen Kampf"""
         # Erstelle Agenten basierend auf Modus
         if self.selected_mode == "AI_VS_AI":
-            self.player1_agent = AttackerAgent("🔴 Angreifer", level=1)
-            self.player2_agent = DefenderAgent("🔵 Verteidiger", level=1)
+            self.player1_agent = AttackerAgent("🔴 KI Angreifer", level=1)
+            self.player2_agent = DefenderAgent("🔵 KI Verteidiger", level=1)
         elif self.selected_mode == "PLAYER_VS_AI":
             self.player1_agent = AttackerAgent("🎮 Spieler", level=1)
             self.player2_agent = DefenderAgent("🤖 KI", level=1)
-            self.multiplayer.set_player_agent(self.player1_agent, player_num=1)
         elif self.selected_mode == "PLAYER_VS_PLAYER":
             self.player1_agent = AttackerAgent("🎮 Spieler 1", level=1)
             self.player2_agent = DefenderAgent("🎮 Spieler 2", level=1)
-            self.multiplayer.set_player_agent(self.player1_agent, player_num=1)
-            self.multiplayer.set_player_agent(self.player2_agent, player_num=2)
         
         # Wende Skins an
         self.player1_agent.skin = self.player1_skin

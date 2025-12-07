@@ -182,7 +182,7 @@ class PyGameUI:
             self.screen.blit(text, text_rect)
             y += 30
     
-    def render_battle(self, agent1, agent2, skin1, skin2, skin_manager, battle_log: List[str] = None, battle_round: int = 0):
+    def render_battle(self, agent1, agent2, skin1, skin2, skin_manager, battle_log: List[str] = None, battle_round: int = 0, waiting_for_input: bool = False, current_agent = None, last_action: str = ""):
         """Rendert den Kampf"""
         # Round counter
         round_text = self.medium_font.render(f"Runde {battle_round}", True, self.COLOR_TEXT_DIM)
@@ -220,8 +220,39 @@ class PyGameUI:
         # Stats - Agent 2
         self.render_agent_stats(agent2, 3 * self.width // 4, 350)
         
+        # Turn indicator
+        if current_agent:
+            turn_text = self.small_font.render(f"Am Zug: {current_agent.name}", True, self.COLOR_SELECTED)
+            turn_rect = turn_text.get_rect(center=(self.width // 2, 90))
+            self.screen.blit(turn_text, turn_rect)
+        
+        # Action selection for player
+        if waiting_for_input and current_agent:
+            action_title = self.medium_font.render("WÄHLE DEINE AKTION:", True, self.COLOR_PRIMARY)
+            action_rect = action_title.get_rect(center=(self.width // 2, 520))
+            self.screen.blit(action_title, action_rect)
+            
+            available_actions = current_agent.get_available_actions()
+            y = 560
+            for i, action in enumerate(available_actions[:8]):  # Max 8 actions
+                # Check if action is available
+                can_use = action.stamina_cost <= current_agent.stamina and action.cooldown == 0
+                color = self.COLOR_TEXT if can_use else self.COLOR_TEXT_DIM
+                
+                action_text = f"[{i+1}] {action.name}"
+                if not can_use:
+                    if action.cooldown > 0:
+                        action_text += f" (Cooldown: {action.cooldown})"
+                    else:
+                        action_text += f" (Stamina: {action.stamina_cost})"
+                
+                text = self.tiny_font.render(action_text, True, color)
+                text_rect = text.get_rect(center=(self.width // 2, y))
+                self.screen.blit(text, text_rect)
+                y += 22
+        
         # Battle Log
-        if battle_log:
+        elif battle_log:
             log_title = self.small_font.render("Kampf-Log:", True, self.COLOR_TEXT)
             self.screen.blit(log_title, (self.width // 2 - 60, 520))
             
@@ -232,10 +263,12 @@ class PyGameUI:
                 log_rect = log_text.get_rect(center=(self.width // 2, y))
                 self.screen.blit(log_text, log_rect)
                 y += 25
-        else:
-            log_text = self.small_font.render("Kampf läuft...", True, self.COLOR_TEXT_DIM)
-            log_rect = log_text.get_rect(center=(self.width // 2, self.height - 50))
-            self.screen.blit(log_text, log_rect)
+        
+        # Last action result
+        if last_action and not waiting_for_input:
+            result_text = self.small_font.render(last_action, True, self.COLOR_SECONDARY)
+            result_rect = result_text.get_rect(center=(self.width // 2, self.height - 30))
+            self.screen.blit(result_text, result_rect)
     
     def render_agent_stats(self, agent, x, y):
         """Rendert Agent-Stats"""
