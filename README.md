@@ -8,6 +8,22 @@ Ein unterhaltsames Python-basiertes Kampfspiel zwischen KI-Agenten mit absurden 
 
 ## 🌟 Versionen
 
+### ⭐ v4.0 - Cline Edition (NEU!)
+**Ein vollständiges, Cline-natives Automationssystem!**
+
+✅ **CLI Command Center** - Click-basiertes Framework  
+✅ **Autonomous Battle League** - Selbstverwaltete Turniere  
+✅ **Analytics Dashboard** - FastAPI Web-Interface  
+
+📖 **[Vollständige Dokumentation → CLINE_EDITION.md](CLINE_EDITION.md)**
+
+```bash
+# Schnellstart
+python3 agentbattle.py --help
+python3 agentbattle.py league init --season 1
+python3 agentbattle.py dashboard --port 8000
+```
+
 ### 📟 v1.0 - CLI-Version (Original)
 Die klassische Terminal-Version mit ASCII-Art und Textinterface.
 

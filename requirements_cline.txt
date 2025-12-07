@@ -1,0 +1,29 @@
+# Agent Battle Simulator v4.0 - Cline Edition Dependencies
+
+# ===== CORE (v1.0 - v3.0) =====
+# Pure Python Standard Library - keine Dependencies
+
+# ===== PYGAME VERSION (v2.0) =====
+pygame>=2.5.0
+
+# ===== WOW FEATURES (v3.0) =====
+openai>=1.0.0  # AI-Generated Actions & Therapy
+fpdf2>=2.7.0   # PDF-Export
+
+# ===== CLINE INTEGRATION (v4.0) =====
+
+# CLI Framework
+click>=8.1.0   # Command-line interface
+
+# Dashboard
+fastapi>=0.104.0        # Web API framework
+uvicorn[standard]>=0.24.0  # ASGI server
+websockets>=12.0        # WebSocket support
+
+# Scheduler
+schedule>=1.2.0         # Job scheduling
+
+# Optional: Build Tools
+pyinstaller>=6.0.0      # Für Executable
+
+# Python Version: 3.8+
