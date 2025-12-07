@@ -1,0 +1,5 @@
+# Agent Battle Simulator - Dependencies
+# Keine externen Dependencies erforderlich!
+# Das Spiel nutzt nur Python Standard Library
+
+# Python Version: 3.8+
