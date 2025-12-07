@@ -66,4 +66,6 @@ Dieses Projekt wurde für den Cline Hackathon (8.-14. Dezember) entwickelt.
 
 ## 📝 Lizenz
 
-MIT License
+Apache License 2.0 - Siehe LICENSE Datei
+
+Copyright 2024 KoMMb0t <kommuniverse@gmail.com>

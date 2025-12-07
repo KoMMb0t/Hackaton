@@ -318,7 +318,9 @@ Dieses Projekt ist für den Cline Hackathon erstellt. Erweiterungen willkommen!
 
 ## 📝 Lizenz
 
-MIT License - Siehe LICENSE Datei
+Apache License 2.0 - Siehe LICENSE Datei
+
+Copyright 2024 KoMMb0t <kommuniverse@gmail.com>
 
 ## 🎉 Credits
 
