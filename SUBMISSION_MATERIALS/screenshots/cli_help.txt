@@ -1,0 +1,22 @@
+Usage: agentbattle.py [OPTIONS] COMMAND [ARGS]...
+
+  🎮 Agent Battle Simulator - Cline Command Center
+
+  Ein Cline-natives Automationssystem für absurde KI-Kämpfe!
+
+Options:
+  --version  Show the version and exit.
+  --help     Show this message and exit.
+
+Commands:
+  analyze-results      Analysiert Kampf-Ergebnisse
+  coach                Life Coach 404 - Ratgeber für existenziell...
+  config               Feature-Konfiguration
+  dashboard            Startet Analytics Dashboard (FastAPI)
+  generate-agent       Generiert einen neuen Agenten
+  league               Autonomous Battle League - Selbstverwaltete Turniere
+  narrate-battle       Generiert narrative Beschreibung eines Kampfes
+  remix                EchoMancer - Battle Poetry & Voice
+  simulate-tournament  Simuliert ein Turnier mit mehreren Agenten
+  status               Zeigt System-Status
+  therapy              Meta-Therapist - Therapie für überforderte Agenten
