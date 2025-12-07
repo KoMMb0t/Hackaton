@@ -1,0 +1,12 @@
+# Agent Battle Simulator - PyGame Version Dependencies
+
+# Core
+pygame>=2.5.0
+
+# Optional: Steam Integration (wenn Steam-Release)
+# steamworks>=1.0.0
+
+# Build Tools (für Executable)
+pyinstaller>=6.0.0
+
+# Python Version: 3.8+
