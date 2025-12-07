@@ -1,0 +1,24 @@
+# Agent Battle Simulator v3.0 - WOW Features Dependencies
+
+# Basis (v1.0 - keine Dependencies!)
+# Pure Python Standard Library
+
+# PyGame Version (v2.0)
+pygame>=2.5.0
+
+# WOW Features (v3.0)
+
+# Feature #1: AI-Generierte Aktionen
+openai>=1.0.0  # Für GPT-4 Integration
+
+# Feature #2: Twitch-Integration
+# Keine zusätzlichen Dependencies!
+# Nutzt Python Standard Library (socket, threading)
+
+# Feature #3: Agenten-Therapie
+fpdf2>=2.7.0  # Für PDF-Export
+
+# Optional: Build Tools
+pyinstaller>=6.0.0  # Für Executable
+
+# Python Version: 3.8+
