@@ -119,68 +119,68 @@ class PyGameUI:
         """Rendert die Skin-Auswahl"""
         # Titel
         title = self.large_font.render("WÄHLE SKINS", True, self.COLOR_PRIMARY)
-        title_rect = title.get_rect(center=(self.width // 2, 80))
+        title_rect = title.get_rect(center=(self.width // 2, 60))
         self.screen.blit(title, title_rect)
         
-        # Spieler 1 Skin
+        # Spieler 1 Skin (OBEN)
         p1_color = self.COLOR_SELECTED if selected_player == 1 else self.COLOR_PRIMARY
         p1_title = self.medium_font.render("Spieler 1", True, p1_color)
-        p1_title_rect = p1_title.get_rect(center=(self.width // 4, 200))
+        p1_title_rect = p1_title.get_rect(center=(self.width // 2, 140))
         self.screen.blit(p1_title, p1_title_rect)
         
         # Selection indicator for Player 1
         if selected_player == 1:
-            indicator = self.small_font.render("◄ SELECTED ►", True, self.COLOR_SELECTED)
-            indicator_rect = indicator.get_rect(center=(self.width // 4, 170))
+            indicator = self.small_font.render("▲ SELECTED ▲", True, self.COLOR_SELECTED)
+            indicator_rect = indicator.get_rect(center=(self.width // 2, 110))
             self.screen.blit(indicator, indicator_rect)
         
         # Skin-Preview (ASCII)
         p1_skin_display = skin_manager.get_skin_display(player1_skin)
         p1_skin_text = self.title_font.render(p1_skin_display, True, self.COLOR_TEXT)
-        p1_skin_rect = p1_skin_text.get_rect(center=(self.width // 4, 300))
+        p1_skin_rect = p1_skin_text.get_rect(center=(self.width // 2, 220))
         self.screen.blit(p1_skin_text, p1_skin_rect)
         
         # Skin-Name
-        p1_name = self.small_font.render(skin_manager.get_skin_name(player1_skin), 
+        p1_name = self.small_font.render(f"◄ {skin_manager.get_skin_name(player1_skin)} ►", 
                                          True, self.COLOR_TEXT_DIM)
-        p1_name_rect = p1_name.get_rect(center=(self.width // 4, 380))
+        p1_name_rect = p1_name.get_rect(center=(self.width // 2, 280))
         self.screen.blit(p1_name, p1_name_rect)
         
-        # Spieler 2 Skin
+        # Spieler 2 Skin (UNTEN)
         p2_color = self.COLOR_SELECTED if selected_player == 2 else self.COLOR_SECONDARY
         p2_title = self.medium_font.render("Spieler 2", True, p2_color)
-        p2_title_rect = p2_title.get_rect(center=(3 * self.width // 4, 200))
+        p2_title_rect = p2_title.get_rect(center=(self.width // 2, 360))
         self.screen.blit(p2_title, p2_title_rect)
         
         # Selection indicator for Player 2
         if selected_player == 2:
-            indicator = self.small_font.render("◄ SELECTED ►", True, self.COLOR_SELECTED)
-            indicator_rect = indicator.get_rect(center=(3 * self.width // 4, 170))
+            indicator = self.small_font.render("▼ SELECTED ▼", True, self.COLOR_SELECTED)
+            indicator_rect = indicator.get_rect(center=(self.width // 2, 500))
             self.screen.blit(indicator, indicator_rect)
         
         p2_skin_display = skin_manager.get_skin_display(player2_skin)
         p2_skin_text = self.title_font.render(p2_skin_display, True, self.COLOR_TEXT)
-        p2_skin_rect = p2_skin_text.get_rect(center=(3 * self.width // 4, 300))
+        p2_skin_rect = p2_skin_text.get_rect(center=(self.width // 2, 440))
         self.screen.blit(p2_skin_text, p2_skin_rect)
         
-        p2_name = self.small_font.render(skin_manager.get_skin_name(player2_skin), 
+        p2_name = self.small_font.render(f"◄ {skin_manager.get_skin_name(player2_skin)} ►", 
                                          True, self.COLOR_TEXT_DIM)
-        p2_name_rect = p2_name.get_rect(center=(3 * self.width // 4, 380))
+        p2_name_rect = p2_name.get_rect(center=(self.width // 2, 500))
         self.screen.blit(p2_name, p2_name_rect)
         
         # Anweisungen
         instructions = [
-            "TAB - Spieler wechseln",
+            "↑ ↓ Spieler wechseln",
             "← → Skin wechseln",
             "ENTER - Start",
             "ESC - Zurück"
         ]
-        y = 500
+        y = 580
         for instruction in instructions:
             text = self.small_font.render(instruction, True, self.COLOR_TEXT_DIM)
             text_rect = text.get_rect(center=(self.width // 2, y))
             self.screen.blit(text, text_rect)
-            y += 35
+            y += 30
     
     def render_battle(self, agent1, agent2, skin1, skin2, skin_manager, battle_log: List[str] = None, battle_round: int = 0):
         """Rendert den Kampf"""

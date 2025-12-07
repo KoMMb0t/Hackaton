@@ -142,10 +142,12 @@ class BattleSimulatorPyGame:
                 self.start_battle()
             elif event.key == pygame.K_ESCAPE:
                 self.game_state = "GAME_MODE_SELECT"
-            # Switch between player 1 and player 2 skin selection
-            elif event.key == pygame.K_TAB:
-                self.selected_player = 2 if self.selected_player == 1 else 1
-            # Skin-Auswahl mit Pfeiltasten
+            # Switch between player 1 and player 2 with UP/DOWN
+            elif event.key == pygame.K_UP:
+                self.selected_player = 1
+            elif event.key == pygame.K_DOWN:
+                self.selected_player = 2
+            # Skin-Auswahl mit LEFT/RIGHT
             elif event.key == pygame.K_LEFT:
                 if self.selected_player == 1:
                     self.player1_skin = self.skin_manager.get_previous_skin(self.player1_skin)
