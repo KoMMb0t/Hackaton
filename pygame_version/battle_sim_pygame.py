@@ -261,12 +261,10 @@ class BattleSimulatorPyGame:
         
         if action:
             # Execute action
-            result = self.game_engine.execute_action(attacker, defender, action)
+            self.game_engine.execute_action(attacker, defender, action, auto_mode=True, delay=0)
             
             # Log action
             log_entry = f"{attacker.name}: {action.name}"
-            if hasattr(result, 'damage') and result.damage > 0:
-                log_entry += f" ({result.damage} Schaden)"
             self.battle_log.append(log_entry)
             self.last_action_result = log_entry
             

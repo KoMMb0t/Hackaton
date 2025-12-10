@@ -152,12 +152,6 @@ class PyGameUI:
         p2_title_rect = p2_title.get_rect(center=(self.width // 2, 360))
         self.screen.blit(p2_title, p2_title_rect)
         
-        # Selection indicator for Player 2
-        if selected_player == 2:
-            indicator = self.small_font.render("▼ SELECTED ▼", True, self.COLOR_SELECTED)
-            indicator_rect = indicator.get_rect(center=(self.width // 2, 500))
-            self.screen.blit(indicator, indicator_rect)
-        
         p2_skin_display = skin_manager.get_skin_display(player2_skin)
         p2_skin_text = self.title_font.render(p2_skin_display, True, self.COLOR_TEXT)
         p2_skin_rect = p2_skin_text.get_rect(center=(self.width // 2, 440))
@@ -167,6 +161,12 @@ class PyGameUI:
                                          True, self.COLOR_TEXT_DIM)
         p2_name_rect = p2_name.get_rect(center=(self.width // 2, 500))
         self.screen.blit(p2_name, p2_name_rect)
+        
+        # Selection indicator for Player 2 (BELOW skin name)
+        if selected_player == 2:
+            indicator = self.small_font.render("▼ SELECTED ▼", True, self.COLOR_SELECTED)
+            indicator_rect = indicator.get_rect(center=(self.width // 2, 530))
+            self.screen.blit(indicator, indicator_rect)
         
         # Anweisungen
         instructions = [
