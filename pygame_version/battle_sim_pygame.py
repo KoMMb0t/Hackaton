@@ -257,7 +257,7 @@ class BattleSimulatorPyGame:
             self.selected_action = None
         else:
             # AI chooses action
-            action = attacker.choose_action()
+            action = attacker.choose_action(defender)
         
         if action:
             # Execute action
