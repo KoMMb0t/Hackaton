@@ -12,6 +12,7 @@
 
 ## 🚀 Quick Start
 
+### CLI Version
 ```bash
 # Clone & Run
 git clone https://github.com/KoMMb0t/Hackaton.git
@@ -26,6 +27,14 @@ python3 agentbattle.py coach ask --type job --personality goth --problem "Soll i
 
 # Dashboard starten
 python3 agentbattle.py dashboard --port 8000
+```
+
+### Web Version 🌐 NEW!
+```bash
+cd webapp
+pip install -r requirements.txt
+python app.py
+# Open http://localhost:3000 in browser
 ```
 
 ---
@@ -67,10 +76,18 @@ python3 agentbattle.py dashboard --port 8000
 - 🤖 Autonomous Battle League
 - 📊 Analytics Dashboard (FastAPI)
 
-### Version 5.0 - Meta Edition ⭐ NEU!
+### Version 5.0 - Meta Edition ⭐
 - 🧠 **Meta-Therapist** - Echtzeit-Monitoring & Interventionen
 - 🎤 **EchoMancer** - Battle Poetry + Voice-Synthesis
 - 🧽 **Life Coach 404** - Multi-Agent-Ratgeber (Job, Beziehung, Finanzen)
+
+### Version 6.0 - Web Edition 🌐 NEU!
+- 🌐 **Browser-Based UI** - Modern web interface with real-time updates
+- 🎮 **21 Battle Bots** - Unique agents with special abilities
+- ⚔️ **8 Combat Actions** - Strategic gameplay with stamina management
+- 🤖 **Intelligent AI** - Score-based action selection
+- 📊 **Live Battle Stats** - Real-time HP, Stamina, Buffs, Debuffs
+- 🏆 **Complete Game Loop** - From bot selection to victory screen
 
 ---
 
